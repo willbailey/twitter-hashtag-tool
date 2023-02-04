@@ -3,11 +3,13 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import { TwitterApi } from 'twitter-api-v2';
+import { AppProps } from 'next/app';
+
 
 const inter = Inter({ subsets: ['latin'] })
 
 
-export async function getServerSideProps({ query }) {
+export async function getServerSideProps({ query } : AppProps) {
   console.log(query.h)
   const hashtag = query.h || 'test';
 
