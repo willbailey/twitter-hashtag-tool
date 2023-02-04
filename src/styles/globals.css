@@ -1,3 +1,8 @@
+.result {
+  font-size: 40px;
+}
+
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
