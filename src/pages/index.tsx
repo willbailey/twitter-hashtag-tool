@@ -3,15 +3,13 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import { TwitterApi } from 'twitter-api-v2';
-import { AppProps } from 'next/app';
+import { GetServerSideProps } from 'next'
 
 
 const inter = Inter({ subsets: ['latin'] })
 
-
-export async function getServerSideProps({ query } : AppProps) {
-  console.log(query.h)
-  const hashtag = query.h || 'test';
+export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (context) => {
+  const hashtag = context.query.h || 'test';
 
   // Instantiate with desired auth type (here's Bearer v2 auth)
   const twitterClient = new TwitterApi('AAAAAAAAAAAAAAAAAAAAAP11lgEAAAAAmzqShDuitrxCSYOqOc925%2FOALic%3Db9o3xW6znUkVjryF1Dwu9asffI9zSalQjTHbqz90SArJwUsC1o')
@@ -28,6 +26,26 @@ export async function getServerSideProps({ query } : AppProps) {
     },
   }
 }
+
+// export async function getServerSideProps({ query } : AppProps) {
+//   console.log(query.h)
+//   const hashtag = query.h || 'test';
+
+//   // Instantiate with desired auth type (here's Bearer v2 auth)
+//   const twitterClient = new TwitterApi('AAAAAAAAAAAAAAAAAAAAAP11lgEAAAAAmzqShDuitrxCSYOqOc925%2FOALic%3Db9o3xW6znUkVjryF1Dwu9asffI9zSalQjTHbqz90SArJwUsC1o')
+
+//   // Tell typescript it's a readonly app
+//   const client = twitterClient.readOnly
+//   const startTime = new Date(new Date().getTime() - 1000 * 60 * 60 * 24)
+//   const result = await client.v2.tweetCountRecent(hashtag, {granularity: 'day', start_time: startTime.toISOString()})
+
+//   return {
+//     props: {
+//       result,
+//       hashtag,
+//     },
+//   }
+// }
 
 export default function Home({result, hashtag}) {
   return (
