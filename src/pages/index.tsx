@@ -5,8 +5,9 @@ import styles from '@/styles/Home.module.css'
 import { TwitterApi } from 'twitter-api-v2';
 import { GetServerSideProps } from 'next'
 
-
 const inter = Inter({ subsets: ['latin'] })
+
+type Data = { result: Number, hashtag: String }
 
 export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (context) => {
   const hashtag = context.query.h || 'test';
@@ -17,7 +18,8 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (con
   // Tell typescript it's a readonly app
   const client = twitterClient.readOnly
   const startTime = new Date(new Date().getTime() - 1000 * 60 * 60 * 24)
-  const result = await client.v2.tweetCountRecent(hashtag, {granularity: 'day', start_time: startTime.toISOString()})
+  const response = await client.v2.tweetCountRecent(hashtag, {granularity: 'day', start_time: startTime.toISOString()})
+  const result = response.meta.total_tweet_count
 
   return {
     props: {
@@ -47,7 +49,7 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (con
 //   }
 // }
 
-export default function Home({result, hashtag}) {
+export default function Home({result, hashtag}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <>
       <Head>
@@ -57,7 +59,7 @@ export default function Home({result, hashtag}) {
       </Head>
       <main className={styles.main}>
         <div className="result">
-          {hashtag}: {result.meta.total_tweet_count}
+          {hashtag}: {result}
         </div>
       </main>
     </>
