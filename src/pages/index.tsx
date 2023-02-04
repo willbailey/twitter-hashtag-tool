@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export async function getServerSideProps({ query }) {
   console.log(query.h)
-  const hashtag = query.h;
+  const hashtag = query.h || 'test';
 
   // Instantiate with desired auth type (here's Bearer v2 auth)
   const twitterClient = new TwitterApi('AAAAAAAAAAAAAAAAAAAAAP11lgEAAAAAmzqShDuitrxCSYOqOc925%2FOALic%3Db9o3xW6znUkVjryF1Dwu9asffI9zSalQjTHbqz90SArJwUsC1o')
